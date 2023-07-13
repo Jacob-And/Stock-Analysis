@@ -9,3 +9,4 @@
 
 ##### The code regarding WorksheetFunction.Max and .Min was provided to me by Brian Kath
 ##### The code regarding Looping through worksheets was provided by Angel Lee
+##### I'm missing the ticker for the greatest increase and such because I just ran out of time, otherwise I believe I would've been able to figure it out

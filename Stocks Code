@@ -1,0 +1,110 @@
+Sub Stocks():
+    ' For some reason I'm struggling to figure out how to upload this as a VBA File, so this is my workaround
+    ' Define the worksheet being worked on
+    Dim ws As Worksheet
+    ' Loop for each worksheet in the workbook
+    For Each ws In ThisWorkbook.Worksheets
+    'Define variables
+    Dim Ticker As String
+    Dim Opened As Double
+    Dim Closed As Double
+    Dim YearlyChange As Double
+    ' Calculate the yearly change
+    YearlyChange = (Opened - Closed)
+    
+    Dim PercentChange As Variant
+
+    Dim StockVolume As Variant
+    ' Start Table 1 at 2
+    Dim Table1 As Integer
+    Table1 = 2
+    ' For loop ranged over all data
+    For i = 2 To 22771
+    
+    ' Check for if the values in column one are the same as above
+    If ws.Cells(i, 1).Value <> ws.Cells(i - 1, 1).Value Then
+    
+    ' If so, make that value of the first open
+        Opened = ws.Cells(i, 3).Value
+        
+    End If
+    
+    'Check if the values in column one are the same as below
+    If ws.Cells(i + 1, 1).Value <> ws.Cells(i, 1).Value Then
+      ' Set ticker value to whatever the current value is
+      Ticker = ws.Cells(i, 1).Value
+      
+      ' Set the closing value to the last close value
+      Closed = ws.Cells(i, 6).Value
+      
+      ' Add to the total stock
+      StockVolume = StockVolume + ws.Cells(i, 7).Value
+      
+      ' Calculate the Change based on the first open and last closed
+      YearlyChange = (Opened - Closed)
+      
+      ' Take that yearly change formula and divide it by the original value
+      PercentChange = FormatPercent(((Opened - Closed) / Opened))
+    
+      ' Print the ticker for the table
+      ws.Range("I" & Table1).Value = Ticker
+      
+      ' Print the Yearly change of each ticker for the table
+      ws.Range("J" & Table1).Value = YearlyChange
+      
+      ' Print the Percent Change of each ticker for the table
+      ws.Range("K" & Table1).Value = PercentChange
+      
+      ' Print the Total stock sold of each ticker for the table
+      ws.Range("L" & Table1).Value = StockVolume
+      
+      ' Add one row to the table
+      Table1 = Table1 + 1
+      
+      ' Reset the total stock volume
+      StockVolume = 0
+      
+    Else
+      ' Just keep adding the stock values, formatting has been unhelpful
+      StockVolume = (StockVolume) + CVar(ws.Cells(i, 7).Value)
+
+    End If
+    
+      For j = 2 To 91
+      If ws.Cells(j, 10).Value < 0 Then
+        ' make the cells red if the yearly change is negative
+        
+        ws.Cells(j, 10).Interior.ColorIndex = 3
+        
+      ' otherwise, make them green
+      Else
+        ws.Cells(j, 10).Interior.ColorIndex = 4
+
+    
+     End If
+     
+     Next j
+     
+Next i
+    ' Labeling the tables properly
+    ws.Range("I1").Value = "Ticker"
+    ws.Range("J1").Value = "Yearly Change"
+    ws.Range("K1").Value = "Percent Change"
+    ws.Range("L1").Value = "Total Stock Volume"
+    ws.Range("O2").Value = "Greatest % Increase"
+    ws.Range("O3").Value = "Greatest % Decrease"
+    ws.Range("O4").Value = "Greatest Total Volume"
+    ws.Range("P1").Value = "Ticker"
+    ws.Range("Q1").Value = "Value"
+    
+    
+    ' Take the max of all of the values from K2 to K5000
+    ws.Range("Q2").Value = FormatPercent(WorksheetFunction.Max(ws.Range("$K$2:$K$5000")))
+    
+    ' Take the min of all of the values from K2 to K5000
+    ws.Range("Q3").Value = FormatPercent(WorksheetFunction.Min(ws.Range("$K$2:$K$5000")))
+    
+    ' Take the max of all of the values from L2 to L5000
+    ws.Range("Q4").Value = WorksheetFunction.Max(ws.Range("$L$2:$L$5000"))
+Next ws
+End Sub
