@@ -7,4 +7,5 @@
 
 ##### This macro properly displays the yearly and percent changes of any stock, along with the total volume of the stock that sold over that year. It also displays the greatest percent increase and decrease of the stocks provided, along with the greatest total volume of stock sold by any given stock in the list. Any stock that has a positive yearly change is highlighted in green, while any stock that went negative is highlighted in red.
 
-##### 
+##### The code regarding WorksheetFunction.Max and .Min was provided to me by Brian Kath
+##### The code regarding Looping through worksheets was provided by Angel Lee
